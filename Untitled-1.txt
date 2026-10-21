@@ -1,0 +1,25 @@
+Sampling 500 balanced images per class...
+
+Resizing to (224, 224) | splitting 70/15/15 | organizing into folders...
+  -> train/empty: 350 images
+     saved 350/350                                                                                                                           
+  -> val/empty: 75 images
+     saved 75/75                                                                                                                             
+  -> test/empty: 75 images
+     saved 75/75                                                                                                                             
+  -> train/occupied: 350 images
+     saved 350/350                                                                                                                           
+  -> val/occupied: 75 images
+     saved 75/75                                                                                                                             
+  -> test/occupied: 75 images
+     saved 75/75                                                                                                                             
+
+Final processed dataset:
+  train/empty    :   350 images
+  train/occupied :   350 images
+    val/empty    :    75 images
+    val/occupied :    75 images
+   test/empty    :    75 images
+   test/occupied :    75 images
+
+Done. Dataset ready at: d:\Users\mann\Downloads\parkvision-ai\data\processed
