@@ -1,14 +1,14 @@
 # ParkVision AI
 ### Intelligent Urban Parking Analytics & Space Optimisation Platform
 
-> **CRS:** Artificial Intelligence &nbsp;|&nbsp; **Course:** Machine Learning and Deep Learning &nbsp;|&nbsp; **Scenario 1: ParkVision AI**
+> **CRS:** Artificial Intelligence &nbsp;|&nbsp; **Course:** Machine Learning and Deep Learning &nbsp;|&nbsp; **Scenario 1:** ParkVision AI
 
 [![Streamlit App](https://img.shields.io/badge/Streamlit-Live%20Demo-FF4B4B?logo=streamlit)](PASTE_YOUR_STREAMLIT_LINK_HERE)
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15-orange)
 
 **Live app:** PASTE_YOUR_STREAMLIT_LINK_HERE
-**Author:** YOUR FULL NAME &nbsp;|&nbsp; **Candidate Registration Number:** YOUR_REG_NO &nbsp;|&nbsp; **School:** YOUR_SCHOOL_NAME
+**Author:** Mann Paresh Patel &nbsp;|&nbsp; **Candidate Registration Number:** 1000428 &nbsp;|&nbsp; **School:** Aspee Nutan Academy
 
 ---
 
