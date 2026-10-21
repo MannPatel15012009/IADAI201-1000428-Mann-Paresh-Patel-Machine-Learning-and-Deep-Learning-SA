@@ -12,7 +12,7 @@ save_period: -1
 cache: false
 device: ''
 workers: 8
-project: D:\Users\mann\Downloads\parkvision-ai\models
+project: D:\Users\mann\Downloads\parkvision-ai\IDAI201-1000428-Mann-Paresh-Patel-Machine-Learning-and-Deep-Learning-SA\models
 name: slot_detector_run
 exist_ok: true
 pretrained: true
@@ -111,4 +111,4 @@ auto_augment: randaugment
 erasing: 0.4
 cfg: null
 tracker: tracktrack.yaml
-save_dir: D:\Users\mann\Downloads\parkvision-ai\models\slot_detector_run
+save_dir: D:\Users\mann\Downloads\parkvision-ai\IDAI201-1000428-Mann-Paresh-Patel-Machine-Learning-and-Deep-Learning-SA\models\slot_detector_run
