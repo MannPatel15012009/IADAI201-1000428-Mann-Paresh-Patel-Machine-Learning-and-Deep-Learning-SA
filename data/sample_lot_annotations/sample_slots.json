@@ -1,0 +1,18 @@
+{
+  "description": "Example slot-coordinate file for lot camera view 'sample_lot_1'. Replace x/y/w/h with the real pixel coordinates measured on your own parking-lot photo (e.g. using any image editor's pixel ruler, or a one-time annotation pass in Roboflow / LabelImg).",
+  "image_reference": "sample_images/sample_lot_1.jpg",
+  "slots": [
+    {"id": 1, "x": 20,  "y": 60, "w": 90, "h": 140},
+    {"id": 2, "x": 120, "y": 60, "w": 90, "h": 140},
+    {"id": 3, "x": 220, "y": 60, "w": 90, "h": 140},
+    {"id": 4, "x": 320, "y": 60, "w": 90, "h": 140},
+    {"id": 5, "x": 420, "y": 60, "w": 90, "h": 140},
+    {"id": 6, "x": 520, "y": 60, "w": 90, "h": 140},
+    {"id": 7, "x": 20,  "y": 220, "w": 90, "h": 140},
+    {"id": 8, "x": 120, "y": 220, "w": 90, "h": 140},
+    {"id": 9, "x": 220, "y": 220, "w": 90, "h": 140},
+    {"id": 10, "x": 320, "y": 220, "w": 90, "h": 140},
+    {"id": 11, "x": 420, "y": 220, "w": 90, "h": 140},
+    {"id": 12, "x": 520, "y": 220, "w": 90, "h": 140}
+  ]
+}
