@@ -7,7 +7,7 @@
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15-orange)
 
-**Live app:**[Streamlit Link](https://3rcxhnehamg7qw2gfwunce.streamlit.app/) &nbsp;|
+**Live app:** [Streamlit Link](https://3rcxhnehamg7qw2gfwunce.streamlit.app/) &nbsp;|
 **Author:** Mann Paresh Patel &nbsp;|&nbsp; **Candidate Registration Number:** 1000428 &nbsp;|&nbsp; **School:** Aspee Nutan Academy
 
 ---
