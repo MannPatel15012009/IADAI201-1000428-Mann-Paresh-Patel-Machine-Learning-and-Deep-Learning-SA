@@ -28,11 +28,12 @@ _detector_cache = {}
 import cv2
 import numpy as np
 
-def check_image_quality(pil_image, sharpness_threshold=100):
-    """Check if image is too blurry. Returns True if good, False if blurry"""
-    cv_image = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2GRAY)
-    laplacian_var = cv2.Laplacian(cv_image, cv2.CV_64F).var()
-    return laplacian_var > sharpness_threshold
+def check_image_quality(image, sharpness_threshold=100):
+    """Return True if the image is sharp enough, False if it is too blurry."""
+    if not isinstance(image, Image.Image):
+        image = Image.open(image)
+    gray = cv2.cvtColor(np.array(image.convert("RGB")), cv2.COLOR_RGB2GRAY)
+    return cv2.Laplacian(gray, cv2.CV_64F).var() > sharpness_threshold
 # ------------------------------------------------------------------
 # Model loading & single-slot prediction
 # ------------------------------------------------------------------

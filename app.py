@@ -87,10 +87,13 @@ def get_detector():
 
 
 if uploaded_image is not None:
+    pil_image = Image.open(uploaded_image).convert("RGB")
+
     from parking_utils import check_image_quality
-    if not check_image_quality(uploaded_image):
+    if not check_image_quality(pil_image):
         st.warning("Image is too blurry. Please upload a clear photo.")
         st.stop()
+
     
     # Continue with processing...
     pil_image = Image.open(uploaded_image).convert("RGB")
