@@ -59,19 +59,24 @@ with st.sidebar:
     )
     threshold = st.slider("Occupied threshold P(occupied) ≥", 0.05, 0.95, config.DEFAULT_THRESHOLD, 0.05)
     slot_file = None
-    layout = "Auto grid"
+    layout = "PKLot 40-Bay Real Layout (Recommended)"
     rows, cols, mx, my, gap = 3, 8, 0.04, 0.08, 6
     if mode != "Single slot crop":
-        with st.expander("Full-lot layout configuration", expanded=(mode == "Full parking-lot image")):
-            layout = st.radio("Slot layout", ["Auto grid", "Slot file (PKLot XML / JSON)"])
-            if layout == "Auto grid":
+        with st.expander("Full-lot layout configuration", expanded=False):
+            layout = st.radio(
+                "Slot layout",
+                ["PKLot 40-Bay Real Layout (Recommended)", "Auto Grid (Configurable)", "Custom Slot File (XML / JSON)"],
+                index=0,
+                help="PKLot 40-Bay uses real geometric bay polygons extracted from camera surveillance. Auto Grid creates a uniform row-by-column grid."
+            )
+            if layout == "Auto Grid (Configurable)":
                 rows = st.number_input("Rows of slots", 1, 12, 3)
                 cols = st.number_input("Slots per row", 1, 40, 8)
                 mx = st.slider("Side margin (%)", 0, 30, 4) / 100
                 my = st.slider("Top/bottom margin (%)", 0, 30, 8) / 100
                 gap = st.slider("Gap between slots (px)", 0, 20, 6)
-                st.caption("Tune margins/gap until outlines align with parking bays.")
-            else:
+                st.caption("Auto grid divides the image uniformly. For angled parking lots like PKLot, use 'PKLot 40-Bay Real Layout'.")
+            elif layout == "Custom Slot File (XML / JSON)":
                 slot_file = st.file_uploader("Slot file", type=["xml", "json"])
     show_ids = st.checkbox("Show slot numbers", True)
     st.divider()
@@ -157,14 +162,19 @@ with tab_analyze:
             try:
                 if slot_file is not None:
                     slots = logic.parse_slots_file(slot_file.getvalue(), slot_file.name, (W, H))
-                elif use_sample and (config.SAMPLES_DIR / "sample_slots.json").exists():
+                elif layout.startswith("PKLot 40-Bay") or use_sample:
+                    slots_file_path = config.SAMPLES_DIR / "sample_slots.json"
+                    if not slots_file_path.exists():
+                        slots_file_path = config.DATA_DIR / "sample_lot_annotations" / "sample_lot_1_slots.json"
+                    slots_data = slots_file_path.read_bytes()
+                    slots = logic.parse_slots_file(slots_data, slots_file_path.name, (W, H))
+                elif layout.startswith("Auto Grid"):
+                    slots = logic.grid_slots(W, H, int(rows), int(cols), mx, my, gap)
+                elif (config.SAMPLES_DIR / "sample_slots.json").exists():
                     slots_data = (config.SAMPLES_DIR / "sample_slots.json").read_bytes()
                     slots = logic.parse_slots_file(slots_data, "sample_slots.json", (W, H))
-                elif layout == "Auto grid":
-                    slots = logic.grid_slots(W, H, int(rows), int(cols), mx, my, gap)
                 else:
-                    slots = None
-                    st.info("Upload a slot file in the sidebar, or switch to *Auto grid*.")
+                    slots = logic.grid_slots(W, H, int(rows), int(cols), mx, my, gap)
             except Exception as exc:  # noqa: BLE001
                 slots = None
                 st.error(f"Could not read the slot file: {exc}")

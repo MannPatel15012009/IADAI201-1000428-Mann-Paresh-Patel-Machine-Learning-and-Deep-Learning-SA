@@ -143,3 +143,4 @@ weighted avg     0.9420    0.9400    0.9399       150
 [2026-10-28 22:44:22] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
 [2026-10-28 22:45:30] [INFO] Predictor: Trained model not found at nonexistent.keras; running in demo mode.
 [2026-10-28 22:46:33] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
+[2026-10-29 00:56:26] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
