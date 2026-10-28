@@ -9,19 +9,17 @@
 
 **UrbanFlow AI Pvt. Ltd.** · Smart Mobility & Urban Analytics  
 **Course:** IDAI201 Machine Learning and Deep Learning  
-**Evaluator Access:** Granted to `ai.assignments@wacpinternational.org`  
+**Access:** Open & Publicly Accessible to All  
 
 ---
 
-## 📌 Submission Evidence & Candidate Information
+## 📌 Candidate Information
 
 - **Student Full Name:** Mann Paresh Patel
 - **Candidate Registration Number:** 1000428
 - **CRS / Course Name:** IDAI201 Machine Learning and Deep Learning
-- **School / Institution Name:** WACP International
-- **GitHub Repository URL:** [https://github.com/MannPatel15012009/IDAI201-1000428-Mann-Paresh-Patel-Machine-Learning-and-Deep-Learning-SA](https://github.com/MannPatel15012009/IDAI201-1000428-Mann-Paresh-Patel-Machine-Learning-and-Deep-Learning-SA)
-- **Live Streamlit Cloud Application:** [https://parkvision-ai.streamlit.app](https://parkvision-ai.streamlit.app)
-- **Submission PDF Document:** [`Submission_Document.html`](Submission_Document.html) (Formal evaluation report for WACP International)
+- **School / Institution Name:** 
+- **Live Streamlit Web Application:** [https://parkvision-ai.streamlit.app](https://parkvision-ai.streamlit.app)
 
 ---
 
@@ -182,9 +180,8 @@ The companion notebook [`ParkVision_AI_Training.ipynb`](ParkVision_AI_Training.i
 ## 8. Local Setup & Execution Guide
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/MannPatel15012009/IDAI201-1000428-Mann-Paresh-Patel-Machine-Learning-and-Deep-Learning-SA.git
-cd IDAI201-1000428-Mann-Paresh-Patel-Machine-Learning-and-Deep-Learning-SA
+# 1. Navigate to the project directory
+cd ParkVision-AI
 
 # 2. Install dependencies
 pip install -r requirements.txt
