@@ -17,7 +17,7 @@ for pct, lvl in [(0, "Low"), (39.9, "Low"), (40, "Moderate"), (75, "Moderate"), 
 assert logic.recommendation(logic.summarize(["occupied"] * 5))[0].startswith("Parking full")
 assert logic.recommendation(logic.summarize(["occupied"] * 9 + ["empty"]))[1] == "warning"
 assert logic.recommendation(logic.summarize(["occupied"] + ["empty"] * 3))[1] == "success"
-assert logic.classify([0.2, 0.5, 0.9]) == ["empty", "occupied", "occupied"]
+assert logic.classify([0.2, 0.5, 0.9], threshold=0.5) == ["empty", "occupied", "occupied"]
 
 # --- slot layouts ------------------------------------------------------
 slots = logic.grid_slots(1280, 720, 3, 8)
@@ -55,7 +55,7 @@ for lot in ("PUC", "UFPR04"):
         for day in ("2012-09-11", "2012-09-12"):
             for cls in ("Empty", "Occupied"):
                 d = raw / lot / weather / day / cls; d.mkdir(parents=True)
-                for k in range(8):
+                for k in range(10):
                     Image.fromarray(rng.integers(0, 255, (60, 40, 3), dtype=np.uint8)).save(d / f"{k}.jpg")
         # exact duplicate to test de-duplication
         shutil = __import__("shutil"); shutil.copy(d / "0.jpg", d / "dup.jpg")

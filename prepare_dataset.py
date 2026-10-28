@@ -109,7 +109,7 @@ def save_image(item, dest: Path, size):
         im.convert("RGB").resize(size, Image.BILINEAR).save(dest, format="JPEG", quality=95)
 
 
-REAL_PKLOT_RAW = Path("IDAI201-1000428-Mann-Paresh-Patel-Machine-Learning-and-Deep-Learning-SA/data/raw/PKLotSegmented_fromRoboflow")
+REAL_PKLOT_RAW = config.BASE_DIR / "data" / "raw" / "PKLotSegmented_fromRoboflow"
 
 
 def prepare(source: Path, out_dir: Path, max_per_class=300, min_per_class=100,

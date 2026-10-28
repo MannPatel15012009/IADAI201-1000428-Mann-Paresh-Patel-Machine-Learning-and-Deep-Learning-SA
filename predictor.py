@@ -83,14 +83,19 @@ class SlotClassifier:
 
     @staticmethod
     def _demo_score(crop: Image.Image) -> float:
-        """Fraction of the slot interior that differs from the slot's own border colour."""
+        """Texture, edge, and color variance heuristic for fallback demo mode."""
         a = np.asarray(crop.convert("RGB").resize((64, 64)), dtype=np.float32)
         ring = np.concatenate([a[:5].reshape(-1, 3), a[-5:].reshape(-1, 3),
                                 a[:, :5].reshape(-1, 3), a[:, -5:].reshape(-1, 3)])
         background = np.median(ring, axis=0)
         inner = a[10:-10, 10:-10]
         diff = np.abs(inner - background).max(axis=2)
-        return float(min(1.0, (diff > 35).mean() * 2.5))
+        color_score = float(min(1.0, (diff > 30).mean() * 2.5))
+        gray = a.mean(axis=2)
+        std_val = float(np.std(gray))
+        edge_score = float(np.clip((std_val - 16.0) / 28.0, 0.0, 1.0))
+        combined = max(color_score, edge_score * 0.85)
+        return float(np.clip(combined, 0.0, 1.0))
 
     def predict_proba(self, crops: List[Optional[Image.Image]]) -> np.ndarray:
         """Return P(occupied) for each crop (None crops count as 0.0 = empty)."""

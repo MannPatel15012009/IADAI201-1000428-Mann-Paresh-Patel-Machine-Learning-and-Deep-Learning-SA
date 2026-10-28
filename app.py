@@ -57,27 +57,41 @@ with st.sidebar:
         ["Auto-detect (Recommended)", "Full parking-lot image", "Single slot crop"],
         help="Auto-detect automatically identifies whether an uploaded image is a single cropped parking space (e.g. 224x224) or a full parking lot surveillance camera image."
     )
-    threshold = st.slider("Occupied threshold P(occupied) ≥", 0.05, 0.95, config.DEFAULT_THRESHOLD, 0.05)
+    threshold = st.slider(
+        "Occupied threshold P(occupied) ≥",
+        0.05, 0.95, config.DEFAULT_THRESHOLD, 0.05,
+        help="Decision boundary for occupancy. A lower threshold (0.20-0.25) prevents hazardous false-empty classifications (directing drivers to already occupied bays)."
+    )
     slot_file = None
-    layout = "PKLot Benchmark Layout (Built-in)"
+    layout = "Configurable Grid (Any Lot - Custom Rows × Cols)"
     rows, cols, mx, my, gap = 3, 8, 0.04, 0.08, 6
     if mode != "Single slot crop":
-        with st.expander("Full-lot layout configuration", expanded=False):
-            layout = st.radio(
-                "Slot layout",
-                ["PKLot Benchmark Layout (Built-in)", "Auto Grid (Configurable)", "Custom Slot File (XML / JSON)"],
-                index=0,
-                help="PKLot Benchmark Layout loads real bay polygons from the PKLot camera feed. Auto Grid creates a configurable grid for any lot. Custom Slot File supports any custom parking lot with any number of slots."
-            )
-            if layout == "Auto Grid (Configurable)":
-                rows = st.number_input("Rows of slots", 1, 12, 3)
-                cols = st.number_input("Slots per row", 1, 40, 8)
+        st.subheader("Slot Layout Mapping")
+        layout = st.radio(
+            "Slot layout mode",
+            [
+                "Configurable Grid (Any Lot - Custom Rows × Cols)",
+                "PKLot Benchmark Preset (40 Bays - Built-in Camera)",
+                "Upload Custom Slot File (XML / JSON)"
+            ],
+            index=0,
+            help="Parking lots differ in bay count and angle. Configurable Grid fits any rectangular lot. PKLot Benchmark Preset maps the 40 fixed bays of the benchmark camera feed. Custom Slot File supports any custom XML/JSON layout."
+        )
+        if layout.startswith("Configurable Grid"):
+            r_col, c_col = st.columns(2)
+            with r_col:
+                rows = st.number_input("Rows", 1, 15, 3)
+            with c_col:
+                cols = st.number_input("Slots / Row", 1, 50, 8)
+            st.caption(f"Configured slots: **{rows * cols} bays** (flexible for any parking lot).")
+            with st.expander("Grid Margins & Spacing"):
                 mx = st.slider("Side margin (%)", 0, 30, 4) / 100
                 my = st.slider("Top/bottom margin (%)", 0, 30, 8) / 100
                 gap = st.slider("Gap between slots (px)", 0, 20, 6)
-                st.caption("Configure rows and columns to match any custom parking lot.")
-            elif layout == "Custom Slot File (XML / JSON)":
-                slot_file = st.file_uploader("Slot file", type=["xml", "json"])
+        elif layout.startswith("PKLot Benchmark"):
+            st.info("📌 **PKLot Benchmark Preset (40 Bays)**: Calibrated specifically for the 40 bays of the PKLot PUC surveillance camera.")
+        elif layout.startswith("Upload Custom"):
+            slot_file = st.file_uploader("Upload Slot File (.xml or .json)", type=["xml", "json"])
     show_ids = st.checkbox("Show slot numbers", True)
     st.divider()
     st.markdown("<div class='legend'><span style='background:#00c800'></span>Empty<br>"
@@ -91,8 +105,9 @@ tab_analyze, tab_perf, tab_about = st.tabs(["🔍 Analyse parking", "📊 Model 
 # ---------------------------------------------------------------- analyse
 with tab_analyze:
     if clf.is_demo:
-        st.warning(f"**Demo mode** - {clf.status} Results below come from a simple colour-difference heuristic, "
-                   "not the trained MobileNetV2 model.")
+        st.warning(f"⚠️ **Demo mode** - {clf.status} Running on heuristic mode instead of trained deep learning weights.")
+    else:
+        st.success(f"🟢 **Active Model Engine:** {clf.model_type} ({clf.status})")
     uploaded = st.file_uploader("Upload a parking image", type=["jpg", "jpeg", "png"])
     sample_path = config.SAMPLES_DIR / "sample_lot.jpg"
     use_sample = False
@@ -164,24 +179,19 @@ with tab_analyze:
                     slots = logic.parse_slots_file(slot_file.getvalue(), slot_file.name, (W, H))
                 elif layout.startswith("PKLot Benchmark") or use_sample:
                     slots_file_path = config.SAMPLES_DIR / "sample_slots.json"
-                    if not slots_file_path.exists():
-                        slots_file_path = config.DATA_DIR / "sample_lot_annotations" / "sample_lot_1_slots.json"
                     slots_data = slots_file_path.read_bytes()
                     slots = logic.parse_slots_file(slots_data, slots_file_path.name, (W, H))
-                elif layout.startswith("Auto Grid"):
+                elif layout.startswith("Configurable Grid"):
                     slots = logic.grid_slots(W, H, int(rows), int(cols), mx, my, gap)
-                elif (config.SAMPLES_DIR / "sample_slots.json").exists():
-                    slots_data = (config.SAMPLES_DIR / "sample_slots.json").read_bytes()
-                    slots = logic.parse_slots_file(slots_data, "sample_slots.json", (W, H))
                 else:
                     slots = logic.grid_slots(W, H, int(rows), int(cols), mx, my, gap)
             except Exception as exc:  # noqa: BLE001
                 slots = None
-                st.error(f"Could not read the slot file: {exc}")
+                st.error(f"Could not read the slot configuration: {exc}")
 
             if slots:
-                with st.spinner("Analysing slots..."):
-                    crops = logic.crop_slots(image, slots)
+                with st.spinner(f"Analysing {len(slots)} parking slots..."):
+                    crops = logic.crop_slots(image, slots, pad_ratio=0.18)
                     probs = clf.predict_proba(crops)
                     statuses = logic.classify(probs, threshold)
                     summary = logic.summarize(statuses)

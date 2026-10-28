@@ -133,19 +133,26 @@ def parse_slots_file(data: bytes, filename: str, image_size, xml_ref_size=(1280,
     return slots
 
 
-def polygon_bbox(poly, width, height):
+def polygon_bbox(poly, width, height, pad_ratio: float = 0.0):
     xs, ys = [p[0] for p in poly], [p[1] for p in poly]
     x1, y1 = max(0, min(xs)), max(0, min(ys))
     x2, y2 = min(width, max(xs)), min(height, max(ys))
+    if pad_ratio > 0.0:
+        bw, bh = x2 - x1, y2 - y1
+        px, py = bw * pad_ratio, bh * pad_ratio
+        x1 = max(0, x1 - px)
+        y1 = max(0, y1 - py)
+        x2 = min(width, x2 + px)
+        y2 = min(height, y2 + py)
     return int(x1), int(y1), int(x2), int(y2)
 
 
-def crop_slots(image: Image.Image, slots):
-    """Crop every slot (bounding box of its polygon). Degenerate boxes become None."""
+def crop_slots(image: Image.Image, slots, pad_ratio: float = 0.18):
+    """Crop every slot with contextual padding to preserve full vehicle context for angled bays."""
     W, H = image.size
     crops = []
     for poly in slots:
-        x1, y1, x2, y2 = polygon_bbox(poly, W, H)
+        x1, y1, x2, y2 = polygon_bbox(poly, W, H, pad_ratio=pad_ratio)
         crops.append(image.crop((x1, y1, x2, y2)) if x2 - x1 >= 4 and y2 - y1 >= 4 else None)
     return crops
 
