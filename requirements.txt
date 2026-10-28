@@ -1,0 +1,12 @@
+streamlit>=1.40
+ultralytics>=8.2.0
+torch
+torchvision
+tensorflow-cpu>=2.16
+numpy
+pandas
+pillow
+opencv-python-headless
+scikit-learn
+matplotlib
+seaborn

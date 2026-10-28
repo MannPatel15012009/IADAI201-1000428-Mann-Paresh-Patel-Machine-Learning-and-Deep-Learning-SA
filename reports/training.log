@@ -1,0 +1,145 @@
+[2026-10-28 17:57:33] [INFO] Predictor: Trained model not found at nonexistent.keras; running in demo mode.
+[2026-10-28 17:58:16] [INFO] TrainYOLO: Dataset split 'train/empty' missing or empty. Running dataset preparation...
+[2026-10-28 17:59:29] [INFO] TrainYOLO: ===========================================================
+[2026-10-28 17:59:29] [INFO] TrainYOLO: STARTING FRESH YOLOv8 TRAINING (1 Epochs)
+[2026-10-28 17:59:29] [INFO] TrainYOLO: Backbone: yolov8n-cls.pt
+[2026-10-28 17:59:29] [INFO] TrainYOLO: Dataset: D:\Users\mann\Downloads\ParkVision-AI\dataset
+[2026-10-28 17:59:29] [INFO] TrainYOLO: ===========================================================
+[2026-10-28 18:00:19] [INFO] TrainYOLO: Saved best model to D:\Users\mann\Downloads\ParkVision-AI\models\best.pt
+[2026-10-28 18:00:19] [INFO] TrainYOLO: Saved latest checkpoint to D:\Users\mann\Downloads\ParkVision-AI\models\last.pt
+[2026-10-28 18:00:19] [INFO] TrainYOLO: Evaluating model on held-out test set: D:\Users\mann\Downloads\ParkVision-AI\dataset\test
+[2026-10-28 18:00:21] [INFO] TrainYOLO: 
+Test Accuracy: 100.0000%
+[2026-10-28 18:00:21] [INFO] TrainYOLO: 
+Classification Report:
+              precision    recall  f1-score   support
+
+       empty     1.0000    1.0000    1.0000        23
+    occupied     1.0000    1.0000    1.0000        23
+
+    accuracy                         1.0000        46
+   macro avg     1.0000    1.0000    1.0000        46
+weighted avg     1.0000    1.0000    1.0000        46
+
+[2026-10-28 18:00:21] [INFO] TrainYOLO: Confusion Matrix [[TN FP][FN TP]]:
+[[23  0]
+ [ 0 23]]
+[2026-10-28 18:00:22] [INFO] TrainYOLO: Training and evaluation completed successfully!
+[2026-10-28 18:00:55] [INFO] TrainYOLO: ===========================================================
+[2026-10-28 18:00:55] [INFO] TrainYOLO: RESUMING TRAINING from existing checkpoint: D:\Users\mann\Downloads\ParkVision-AI\models\last.pt
+[2026-10-28 18:00:55] [INFO] TrainYOLO: Training will NOT restart from the beginning.
+[2026-10-28 18:00:55] [INFO] TrainYOLO: ===========================================================
+[2026-10-28 18:01:25] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
+[2026-10-28 18:03:32] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
+[2026-10-28 18:03:35] [INFO] Predictor: Trained model not found at nonexistent.keras; running in demo mode.
+[2026-10-28 18:04:22] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
+[2026-10-28 18:17:01] [INFO] Predictor: Trained model not found at nonexistent.keras; running in demo mode.
+[2026-10-28 18:17:22] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
+[2026-10-28 18:48:47] [INFO] TrainYOLO: ===========================================================
+[2026-10-28 18:48:48] [INFO] TrainYOLO: STARTING FRESH YOLOv8 TRAINING (1 Epochs)
+[2026-10-28 18:48:48] [INFO] TrainYOLO: Backbone: yolov8n-cls.pt
+[2026-10-28 18:48:48] [INFO] TrainYOLO: Dataset: D:\Users\mann\Downloads\ParkVision-AI\data\processed
+[2026-10-28 18:48:48] [INFO] TrainYOLO: ===========================================================
+[2026-10-28 18:49:41] [INFO] TrainYOLO: Saved best model to D:\Users\mann\Downloads\ParkVision-AI\models\best.pt
+[2026-10-28 18:49:41] [INFO] TrainYOLO: Saved latest checkpoint to D:\Users\mann\Downloads\ParkVision-AI\models\last.pt
+[2026-10-28 18:49:41] [INFO] TrainYOLO: Evaluating model on held-out test set: D:\Users\mann\Downloads\ParkVision-AI\data\processed\test
+[2026-10-28 18:49:43] [INFO] TrainYOLO: 
+Test Accuracy: 94.0000%
+[2026-10-28 18:49:43] [INFO] TrainYOLO: 
+Classification Report:
+              precision    recall  f1-score   support
+
+       empty     0.9125    0.9733    0.9419        75
+    occupied     0.9714    0.9067    0.9379        75
+
+    accuracy                         0.9400       150
+   macro avg     0.9420    0.9400    0.9399       150
+weighted avg     0.9420    0.9400    0.9399       150
+
+[2026-10-28 18:49:43] [INFO] TrainYOLO: Confusion Matrix [[TN FP][FN TP]]:
+[[73  2]
+ [ 7 68]]
+[2026-10-28 18:49:43] [INFO] TrainYOLO: Training and evaluation completed successfully!
+[2026-10-28 18:50:02] [INFO] TrainYOLO: ===========================================================
+[2026-10-28 18:50:02] [INFO] TrainYOLO: RESUMING TRAINING from existing checkpoint: D:\Users\mann\Downloads\ParkVision-AI\models\last.pt
+[2026-10-28 18:50:02] [INFO] TrainYOLO: Training will NOT restart from the beginning.
+[2026-10-28 18:50:02] [INFO] TrainYOLO: ===========================================================
+[2026-10-28 18:51:15] [INFO] TrainYOLO: Saved best model to D:\Users\mann\Downloads\ParkVision-AI\models\best.pt
+[2026-10-28 18:51:15] [INFO] TrainYOLO: Saved latest checkpoint to D:\Users\mann\Downloads\ParkVision-AI\models\last.pt
+[2026-10-28 18:51:15] [INFO] TrainYOLO: Evaluating model on held-out test set: D:\Users\mann\Downloads\ParkVision-AI\data\processed\test
+[2026-10-28 18:51:16] [INFO] TrainYOLO: 
+Test Accuracy: 98.0000%
+[2026-10-28 18:51:16] [INFO] TrainYOLO: 
+Classification Report:
+              precision    recall  f1-score   support
+
+       empty     1.0000    0.9600    0.9796        75
+    occupied     0.9615    1.0000    0.9804        75
+
+    accuracy                         0.9800       150
+   macro avg     0.9808    0.9800    0.9800       150
+weighted avg     0.9808    0.9800    0.9800       150
+
+[2026-10-28 18:51:16] [INFO] TrainYOLO: Confusion Matrix [[TN FP][FN TP]]:
+[[72  3]
+ [ 0 75]]
+[2026-10-28 18:51:16] [INFO] TrainYOLO: Training and evaluation completed successfully!
+[2026-10-28 18:51:51] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
+[2026-10-28 18:52:28] [INFO] Predictor: Trained model not found at nonexistent.keras; running in demo mode.
+[2026-10-28 19:26:54] [INFO] PrepareExtended: Existing dataset has 1400 images registered. Ensuring ZERO redundancy.
+[2026-10-28 19:26:54] [INFO] PrepareExtended: Chunk Target: 10000 total images (5000 per class: 3500 train, 750 val, 750 test)
+[2026-10-28 19:26:54] [INFO] PrepareExtended: Collecting empty images (offset 0)...
+[2026-10-28 19:26:55] [INFO] PrepareExtended: Collecting occupied images (offset 0)...
+[2026-10-28 19:27:26] [INFO] PrepareExtended: Compressing into data_extended_10k.zip...
+[2026-10-28 19:29:05] [INFO] PrepareExtended: Created data_extended_10k.zip (17.11 MB) containing 10000 images.
+[2026-10-28 19:29:51] [INFO] PrepareExtended: Existing dataset has 1400 images registered. Ensuring ZERO redundancy.
+[2026-10-28 19:29:51] [INFO] PrepareExtended: Chunk Target: 10000 total images (5000 per class: 3500 train, 750 val, 750 test)
+[2026-10-28 19:29:51] [INFO] PrepareExtended: Collecting empty images (offset 5000)...
+[2026-10-28 19:29:51] [INFO] PrepareExtended: Collecting occupied images (offset 5000)...
+[2026-10-28 19:30:28] [INFO] PrepareExtended: Compressing into data_extended_chunk2_10k.zip...
+[2026-10-28 19:32:05] [INFO] PrepareExtended: Created data_extended_chunk2_10k.zip (17.58 MB) containing 10000 images.
+[2026-10-28 19:32:25] [INFO] TrainProgressive: 
+=======================================================
+[2026-10-28 19:32:25] [INFO] TrainProgressive: ▶️ STARTING PROGRESSIVE CHUNK 1/1: data_extended_10k.zip
+[2026-10-28 19:32:25] [INFO] TrainProgressive: =======================================================
+[2026-10-28 19:32:25] [INFO] TrainProgressive: Unpacking data_extended_10k.zip...
+[2026-10-28 19:32:38] [INFO] TrainProgressive: Loading base weights from: D:\Users\mann\Downloads\ParkVision-AI\models\best.pt
+[2026-10-28 19:32:42] [INFO] TrainProgressive: Training on chunk dataset for 1 epochs (batch=64, lr0=0.001)...
+[2026-10-28 19:43:35] [INFO] TrainProgressive: Updated best model at D:\Users\mann\Downloads\ParkVision-AI\models\best.pt
+[2026-10-28 19:44:58] [INFO] TrainProgressive: Chunk Evaluation -> Test Accuracy: 100.00%, Precision: 100.00%, Recall: 100.00%, F1: 100.00%
+[2026-10-28 19:45:09] [INFO] TrainProgressive: 
+🎉 Progressive training session concluded successfully!
+[2026-10-28 19:45:09] [INFO] TrainProgressive: Final Model Weights: D:\Users\mann\Downloads\ParkVision-AI\models\best.pt
+[2026-10-28 19:45:50] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
+[2026-10-28 22:22:33] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
+[2026-10-28 22:36:06] [INFO] TrainYOLO: ===========================================================
+[2026-10-28 22:36:06] [INFO] TrainYOLO: STARTING FRESH YOLOv8 TRAINING (1 Epochs)
+[2026-10-28 22:36:06] [INFO] TrainYOLO: Backbone: yolov8n-cls.pt
+[2026-10-28 22:36:06] [INFO] TrainYOLO: Dataset: D:\Users\mann\Downloads\ParkVision-AI\data\processed
+[2026-10-28 22:36:06] [INFO] TrainYOLO: ===========================================================
+[2026-10-28 22:36:52] [INFO] TrainYOLO: Saved best model to D:\Users\mann\Downloads\ParkVision-AI\models\best.pt
+[2026-10-28 22:36:52] [INFO] TrainYOLO: Saved latest checkpoint to D:\Users\mann\Downloads\ParkVision-AI\models\last.pt
+[2026-10-28 22:36:52] [INFO] TrainYOLO: Evaluating model on held-out test set: D:\Users\mann\Downloads\ParkVision-AI\data\processed\test
+[2026-10-28 22:36:53] [INFO] TrainYOLO: 
+Test Accuracy: 94.0000%
+[2026-10-28 22:36:53] [INFO] TrainYOLO: 
+Classification Report:
+              precision    recall  f1-score   support
+
+       empty     0.9125    0.9733    0.9419        75
+    occupied     0.9714    0.9067    0.9379        75
+
+    accuracy                         0.9400       150
+   macro avg     0.9420    0.9400    0.9399       150
+weighted avg     0.9420    0.9400    0.9399       150
+
+[2026-10-28 22:36:53] [INFO] TrainYOLO: Confusion Matrix [[TN FP][FN TP]]:
+[[73  2]
+ [ 7 68]]
+[2026-10-28 22:36:53] [INFO] TrainYOLO: Training and evaluation completed successfully!
+[2026-10-28 22:38:15] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
+[2026-10-28 22:38:56] [INFO] Predictor: Trained model not found at nonexistent.keras; running in demo mode.
+[2026-10-28 22:43:58] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
+[2026-10-28 22:44:22] [INFO] Predictor: Loaded YOLOv8 model (best.pt)
+[2026-10-28 22:45:30] [INFO] Predictor: Trained model not found at nonexistent.keras; running in demo mode.
+[2026-10-28 22:46:33] [INFO] Predictor: Loaded YOLOv8 model (best.pt)

@@ -1,0 +1,27 @@
+{
+  "images_per_class_used": 150,
+  "available": {
+    "empty": 150,
+    "occupied": 150
+  },
+  "split": {
+    "train": {
+      "empty": 105,
+      "occupied": 105
+    },
+    "val": {
+      "empty": 22,
+      "occupied": 22
+    },
+    "test": {
+      "empty": 23,
+      "occupied": 23
+    }
+  },
+  "size": [
+    224,
+    224
+  ],
+  "group_split": false,
+  "seed": 42
+}

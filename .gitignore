@@ -1,0 +1,23 @@
+# Python & Bytecode
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+env/
+venv/
+
+# Large Datasets & Caches (Crucial: Prevents Git hanging on 3.9 GB raw data)
+data/raw/
+raw_dataset/
+dataset/
+temp_chunk/
+*.cache
+
+# Large extended zips (keep data.zip for starter demo if desired)
+data_extended_*.zip
+
+# Training runs & checkpoints
+runs/
+progressive_run/
+models/_stage*.keras
+.ipynb_checkpoints/
