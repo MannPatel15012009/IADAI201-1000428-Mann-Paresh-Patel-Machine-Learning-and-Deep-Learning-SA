@@ -87,17 +87,19 @@ def parse_slots_file(data: bytes, filename: str, image_size, xml_ref_size=(1280,
 
     JSON formats accepted:  [[x1,y1,x2,y2], ...]  |  [[[x,y],[x,y],...], ...]
     or {"image_width":W, "image_height":H, "slots":[...]} (coordinates are rescaled).
-    PKLot XML coordinates refer to 1280x720 images; they are rescaled to the upload.
+    PKLot XML coordinates default to 1280x720 images; if coordinates exceed 1350px (e.g. 1080p)
+    or are normalized (0-1), coordinate spaces are dynamically auto-calibrated to prevent clustering.
     """
     W, H = image_size
     name = filename.lower()
-    slots = []
+    raw_slots = []
+    sx = sy = 1.0
+
     if name.endswith(".json"):
         obj = json.loads(data.decode("utf-8"))
-        sx = sy = 1.0
         if isinstance(obj, dict):
             if obj.get("image_width") and obj.get("image_height"):
-                sx, sy = W / obj["image_width"], H / obj["image_height"]
+                sx, sy = W / float(obj["image_width"]), H / float(obj["image_height"])
             obj = obj.get("slots", [])
         for item in obj:
             if isinstance(item, dict) and "x" in item and "y" in item:
@@ -108,10 +110,23 @@ def parse_slots_file(data: bytes, filename: str, image_size, xml_ref_size=(1280,
                 poly = [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
             else:
                 poly = [tuple(p) for p in item]
-            slots.append(_scale(poly, sx, sy))
+            raw_slots.append(poly)
+
+        # Check if coordinates are normalized 0.0-1.0
+        if sx == 1.0 and sy == 1.0 and raw_slots:
+            xs = [p[0] for poly in raw_slots for p in poly]
+            ys = [p[1] for poly in raw_slots for p in poly]
+            if max(xs) <= 1.05 and max(ys) <= 1.05:
+                sx, sy = float(W), float(H)
+
     elif name.endswith(".xml"):
         root = ET.fromstring(data)
-        sx, sy = W / xml_ref_size[0], H / xml_ref_size[1]
+        ref_w, ref_h = (float(xml_ref_size[0]), float(xml_ref_size[1])) if xml_ref_size else (1280.0, 720.0)
+
+        res_elem = root.find("resolution")
+        if res_elem is not None and res_elem.get("width") and res_elem.get("height"):
+            ref_w, ref_h = float(res_elem.get("width")), float(res_elem.get("height"))
+
         for space in root.iter("space"):
             pts = [(float(p.get("x")), float(p.get("y"))) for p in space.findall("./contour/point")]
             if len(pts) < 3:
@@ -125,11 +140,29 @@ def parse_slots_file(data: bytes, filename: str, image_size, xml_ref_size=(1280,
                 for dx, dy in ((-w / 2, -h / 2), (w / 2, -h / 2), (w / 2, h / 2), (-w / 2, h / 2)):
                     pts.append((cx + dx * math.cos(ang) - dy * math.sin(ang),
                                 cy + dx * math.sin(ang) + dy * math.cos(ang)))
-            slots.append(_scale(pts, sx, sy))
+            raw_slots.append(pts)
+
+        if raw_slots:
+            xs = [p[0] for poly in raw_slots for p in poly]
+            ys = [p[1] for poly in raw_slots for p in poly]
+            max_x = max(xs) if xs else 0
+            max_y = max(ys) if ys else 0
+
+            # If coordinates exceed standard 720p bounds (e.g. 1080p surveillance video)
+            if max_x > 1400 or max_y > 850:
+                ref_w, ref_h = 1920.0, 1080.0
+            elif max_x <= 1.05 and max_y <= 1.05:
+                ref_w, ref_h = 1.0, 1.0
+
+        sx, sy = W / ref_w, H / ref_h
+
     else:
         raise ValueError("Slot file must be .json or .xml")
-    if not slots:
+
+    if not raw_slots:
         raise ValueError("No slots found in the file.")
+
+    slots = [_scale(poly, sx, sy) for poly in raw_slots]
     return slots
 
 

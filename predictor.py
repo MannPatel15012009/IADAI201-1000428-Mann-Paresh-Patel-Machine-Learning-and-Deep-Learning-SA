@@ -167,7 +167,7 @@ class AutoSlotDetector:
         if self.model is None:
             return None
         try:
-            res = self.model.predict(image, conf=conf, verbose=False)[0]
+            res = self.model.predict(image, conf=conf, iou=0.45, verbose=False)[0]
             if hasattr(res, "boxes") and len(res.boxes) > 0:
                 raw_boxes = res.boxes.xyxy.cpu().numpy()
                 # Sort boxes naturally: row bands first, then x-coordinate

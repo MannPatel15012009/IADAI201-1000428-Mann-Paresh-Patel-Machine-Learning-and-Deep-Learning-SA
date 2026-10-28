@@ -1,6 +1,8 @@
 {
   "description": "Real slot coordinates extracted from 2013-04-14_17_05_12_jpg.rf.ab71fb5f076f42126b704835be6aeffc.jpg's Roboflow label.",
   "image_reference": "sample_images\\sample_lot_1.jpg",
+  "image_width": 1280,
+  "image_height": 720,
   "slots": [
     {
       "id": 1,
