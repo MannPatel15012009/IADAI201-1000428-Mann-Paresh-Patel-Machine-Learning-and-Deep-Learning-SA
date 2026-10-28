@@ -54,7 +54,7 @@ SEED = 42
 # ---- business rules (assignment, Step 4) -------------------------------
 LOW_CONGESTION_MAX = 40.0       # occupancy % below this  -> Low
 HIGH_CONGESTION_MIN = 75.0      # occupancy % above this  -> High (40-75 inclusive = Moderate)
-DEFAULT_THRESHOLD = 0.5         # P(occupied) >= threshold -> occupied
+DEFAULT_THRESHOLD = 0.20        # P(occupied) >= threshold -> occupied (optimized for shaded outdoor lots)
 
 
 def get_logger(name: str = "ParkVision") -> logging.Logger:
