@@ -144,3 +144,44 @@ class SlotClassifier:
 
 def load_classifier(model_path: Optional[Path] = None) -> SlotClassifier:
     return SlotClassifier(model_path)
+
+
+class AutoSlotDetector:
+    """Detects parking slot boundaries directly from surveillance images using slot_detector.pt."""
+
+    def __init__(self, model_path: Optional[Path] = None):
+        self.model = None
+        if model_path is None:
+            model_path = config.MODEL_DIR / "slot_detector.pt"
+        model_path = Path(model_path)
+        if model_path.exists():
+            try:
+                from ultralytics import YOLO
+                self.model = YOLO(str(model_path))
+                logger.info(f"Loaded slot detector ({model_path.name})")
+            except Exception as exc:
+                logger.warning(f"Could not load slot detector: {exc}")
+
+    def detect_slots(self, image: Image.Image, conf: float = 0.15):
+        """Returns slot polygons automatically sorted in natural reading order."""
+        if self.model is None:
+            return None
+        try:
+            res = self.model.predict(image, conf=conf, verbose=False)[0]
+            if hasattr(res, "boxes") and len(res.boxes) > 0:
+                raw_boxes = res.boxes.xyxy.cpu().numpy()
+                # Sort boxes naturally: row bands first, then x-coordinate
+                sorted_boxes = sorted(raw_boxes, key=lambda b: (round(b[1] / 60), b[0]))
+                polys = []
+                for b in sorted_boxes:
+                    x1, y1, x2, y2 = float(b[0]), float(b[1]), float(b[2]), float(b[3])
+                    polys.append([(x1, y1), (x2, y1), (x2, y2), (x1, y2)])
+                return polys
+        except Exception as exc:
+            logger.warning(f"Slot detection failed: {exc}")
+        return None
+
+
+def get_slot_detector(model_path: Optional[Path] = None) -> AutoSlotDetector:
+    return AutoSlotDetector(model_path)
+

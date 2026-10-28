@@ -10,7 +10,7 @@ from PIL import Image, ImageOps
 
 import config
 import logic
-from predictor import load_classifier
+from predictor import load_classifier, get_slot_detector
 
 st.set_page_config(page_title="ParkVision AI", page_icon="🅿️", layout="wide")
 
@@ -28,6 +28,11 @@ def get_classifier(model_choice: str = "Auto"):
     elif model_choice == "MobileNetV2":
         return load_classifier(config.MODEL_PATH)
     return load_classifier()
+
+
+@st.cache_resource(show_spinner="Loading AI slot detector...")
+def get_slot_detector_engine():
+    return get_slot_detector()
 
 
 def read_image(file_or_path):
@@ -63,35 +68,39 @@ with st.sidebar:
         help="Decision boundary for occupancy. A lower threshold (0.20-0.25) prevents hazardous false-empty classifications (directing drivers to already occupied bays)."
     )
     slot_file = None
-    layout = "Configurable Grid (Any Lot - Custom Rows × Cols)"
+    layout = "Auto AI Slot Detection (Recommended - Fully Automated)"
     rows, cols, mx, my, gap = 3, 8, 0.04, 0.08, 6
     if mode != "Single slot crop":
         st.subheader("Slot Layout Mapping")
         layout = st.radio(
             "Slot layout mode",
             [
-                "Configurable Grid (Any Lot - Custom Rows × Cols)",
+                "Auto AI Slot Detection (Recommended - Fully Automated)",
                 "PKLot Benchmark Preset (40 Bays - Built-in Camera)",
-                "Upload Custom Slot File (XML / JSON)"
+                "Manual Grid / Custom File (Advanced Override)"
             ],
             index=0,
-            help="Parking lots differ in bay count and angle. Configurable Grid fits any rectangular lot. PKLot Benchmark Preset maps the 40 fixed bays of the benchmark camera feed. Custom Slot File supports any custom XML/JSON layout."
+            help="Auto AI Slot Detection automatically identifies parking bays across the lot without asking the user to count rows or columns."
         )
-        if layout.startswith("Configurable Grid"):
-            r_col, c_col = st.columns(2)
-            with r_col:
-                rows = st.number_input("Rows", 1, 15, 3)
-            with c_col:
-                cols = st.number_input("Slots / Row", 1, 50, 8)
-            st.caption(f"Configured slots: **{rows * cols} bays** (flexible for any parking lot).")
-            with st.expander("Grid Margins & Spacing"):
-                mx = st.slider("Side margin (%)", 0, 30, 4) / 100
-                my = st.slider("Top/bottom margin (%)", 0, 30, 8) / 100
-                gap = st.slider("Gap between slots (px)", 0, 20, 6)
+        if layout.startswith("Auto AI"):
+            st.info("🤖 **Fully Automated:** The AI automatically detects parking bays across the surveillance frame. No need to specify rows or columns!")
         elif layout.startswith("PKLot Benchmark"):
             st.info("📌 **PKLot Benchmark Preset (40 Bays)**: Calibrated specifically for the 40 bays of the PKLot PUC surveillance camera.")
-        elif layout.startswith("Upload Custom"):
-            slot_file = st.file_uploader("Upload Slot File (.xml or .json)", type=["xml", "json"])
+        elif layout.startswith("Manual Grid"):
+            override_type = st.radio("Override Type", ["Configurable Grid", "Upload Custom Slot File"], index=0)
+            if override_type == "Configurable Grid":
+                r_col, c_col = st.columns(2)
+                with r_col:
+                    rows = st.number_input("Rows", 1, 15, 3)
+                with c_col:
+                    cols = st.number_input("Slots / Row", 1, 50, 8)
+                st.caption(f"Configured slots: **{rows * cols} bays**.")
+                with st.expander("Grid Margins & Spacing"):
+                    mx = st.slider("Side margin (%)", 0, 30, 4) / 100
+                    my = st.slider("Top/bottom margin (%)", 0, 30, 8) / 100
+                    gap = st.slider("Gap between slots (px)", 0, 20, 6)
+            else:
+                slot_file = st.file_uploader("Upload Slot File (.xml or .json)", type=["xml", "json"])
     show_ids = st.checkbox("Show slot numbers", True)
     st.divider()
     st.markdown("<div class='legend'><span style='background:#00c800'></span>Empty<br>"
@@ -175,14 +184,19 @@ with tab_analyze:
         # ---- full lot ----------------------------------------------------
         else:
             try:
-                if slot_file is not None:
-                    slots = logic.parse_slots_file(slot_file.getvalue(), slot_file.name, (W, H))
+                if layout.startswith("Auto AI"):
+                    auto_detector = get_slot_detector_engine()
+                    slots = auto_detector.detect_slots(image)
+                    if not slots:
+                        slots_file_path = config.SAMPLES_DIR / "sample_slots.json"
+                        slots_data = slots_file_path.read_bytes()
+                        slots = logic.parse_slots_file(slots_data, slots_file_path.name, (W, H))
                 elif layout.startswith("PKLot Benchmark") or use_sample:
                     slots_file_path = config.SAMPLES_DIR / "sample_slots.json"
                     slots_data = slots_file_path.read_bytes()
                     slots = logic.parse_slots_file(slots_data, slots_file_path.name, (W, H))
-                elif layout.startswith("Configurable Grid"):
-                    slots = logic.grid_slots(W, H, int(rows), int(cols), mx, my, gap)
+                elif slot_file is not None:
+                    slots = logic.parse_slots_file(slot_file.getvalue(), slot_file.name, (W, H))
                 else:
                     slots = logic.grid_slots(W, H, int(rows), int(cols), mx, my, gap)
             except Exception as exc:  # noqa: BLE001
