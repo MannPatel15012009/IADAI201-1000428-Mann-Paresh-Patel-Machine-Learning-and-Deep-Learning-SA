@@ -18,7 +18,7 @@
 - **Student Full Name:** Mann Paresh Patel
 - **Candidate Registration Number:** 1000428
 - **CRS / Course Name:** IADAI201 Machine Learning and Deep Learning
-- **School / Institution Name:** Aspee Nutan Academy
+- **School / Institution Name:** 
 - **Live Streamlit Web Application:** [https://parkvision-ai.streamlit.app](https://parkvision-ai.streamlit.app)
 
 ---
