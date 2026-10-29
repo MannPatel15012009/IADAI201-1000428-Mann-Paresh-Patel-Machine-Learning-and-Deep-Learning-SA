@@ -21,7 +21,7 @@
 | **Candidate Registration Number** | 1000428 |
 | **Course Name** | Machine Learning and Deep Learning |
 | **School / Institution Name** | Aspee Nutan Academy |
-| **Live Streamlit Web Application** | [https://parkvision-ai.streamlit.app](https://parkvision-ai.streamlit.app) |
+| **Live Streamlit Web Application** | [StreamLit Link](https://bqedkbwjppgsoutiyrew4n.streamlit.app/)) |
 
 ---
 
